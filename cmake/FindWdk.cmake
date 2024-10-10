@@ -35,15 +35,27 @@
 #
 
 if(DEFINED ENV{WDKContentRoot})
-    file(GLOB WDK_NTDDK_FILES
-        "$ENV{WDKContentRoot}/Include/*/km/ntddk.h" # WDK 10
-        "$ENV{WDKContentRoot}/Include/km/ntddk.h" # WDK 8.0, 8.1
-    )
+    if(DEFINED ENV{WDKVersion})
+        file(GLOB WDK_NTDDK_FILES
+            "$ENV{WDKContentRoot}/Include/$ENV{WDKVersion}/km/ntddk.h" # WDK 10
+        )
+    else()
+        file(GLOB WDK_NTDDK_FILES
+            "$ENV{WDKContentRoot}/Include/*/km/ntddk.h" # WDK 10
+            "$ENV{WDKContentRoot}/Include/km/ntddk.h" # WDK 8.0, 8.1
+        )
+    endif()
 else()
-    file(GLOB WDK_NTDDK_FILES
-        "C:/Program Files*/Windows Kits/*/Include/*/km/ntddk.h" # WDK 10
-        "C:/Program Files*/Windows Kits/*/Include/km/ntddk.h" # WDK 8.0, 8.1
-    )
+    if(DEFINED ENV{WDKVersion})
+        file(GLOB WDK_NTDDK_FILES
+            "C:/Program Files*/Windows Kits/*/Include/$ENV{WDKVersion}/km/ntddk.h" # WDK 10
+        )
+    else()
+        file(GLOB WDK_NTDDK_FILES
+            "C:/Program Files*/Windows Kits/*/Include/*/km/ntddk.h" # WDK 10
+            "C:/Program Files*/Windows Kits/*/Include/km/ntddk.h" # WDK 8.0, 8.1
+        )
+    endif()
 endif()
 
 if(WDK_NTDDK_FILES)
